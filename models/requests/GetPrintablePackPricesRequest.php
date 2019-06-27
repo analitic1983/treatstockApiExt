@@ -8,7 +8,7 @@
 
 namespace treatstock\api\v2\models\requests;
 
-class GetPrintablePackCostsRequest
+class GetPrintablePackPricesRequest
 {
     /**
      * This is id from create printable pack answer

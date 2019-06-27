@@ -2,15 +2,15 @@
 
 namespace treatstock\api\v2\requestProcessor\requests;
 
-use treatstock\api\v2\models\requests\GetPrintablePackCostsRequest;
+use treatstock\api\v2\models\requests\GetPrintablePackPricesRequest;
 
 /**
- * Class GetPrintablePackCostsHttpRequest
+ * Class GetPrintablePackPricesHttpRequest
  *
  * @package treatstock\apiv2\requests
- * @property GetPrintablePackCostsRequest $model
+ * @property GetPrintablePackPricesRequest $model
  */
-class GetPrintablePackCostsHttpRequest extends BaseRequest
+class GetPrintablePackPricesHttpRequest extends BaseRequest
 {
     /**
      * Form request url

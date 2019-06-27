@@ -1,4 +1,5 @@
 <?php
+
 namespace treatstock\api\v2\requestProcessor;
 
 use treatstock\api\v2\exceptions\InvalidAnswerException;
@@ -10,7 +11,7 @@ class RequestProcessor
     /**
      * @var bool
      */
-    public $isDebug;
+    public $isDebug = 0;
 
     /**
      * @param BaseRequest $httpRequest
@@ -20,7 +21,7 @@ class RequestProcessor
      */
     public function processRequest(BaseRequest $httpRequest, $httpResponseClass)
     {
-        $httpData = $this->processHttpRequest($httpRequest->getRequestUrl(), $httpRequest->getPostParams());
+        $httpData = $this->processHttpRequest($httpRequest->getRequestUrl(), $httpRequest->getPostParams(), $httpRequest->getMethod());
         if (!$httpData) {
             throw new InvalidAnswerException('Empty treatstock api answer');
         }
@@ -37,14 +38,20 @@ class RequestProcessor
     /**
      * @param string $url
      * @param array $postParams
+     * @param string $method
      * @return mixed
      */
-    protected function processHttpRequest($url, $postParams)
+    protected function processHttpRequest($url, $postParams, $method)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_URL, $url);
+
+        if ($method) {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        }
+
         if ($postParams !== null) {
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postParams);
