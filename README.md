@@ -203,4 +203,22 @@ class RequestProcessorExt extends \treatstock\api\v2\requestProcessor\RequestPro
 $apiService->requestProcessor  = new RequestProcessorExt();
 ...
 $createResponse = $apiService->createPrintablePack($createRequest);
+</pre>
+
+* Treatsock can autodetect client location by ip, use  
+<pre>$createRequest->locationIp = '000.000.000.000';</pre>
+instead of 
+<pre>$createRequest->locationCountryIso = 'US'</pre>
+
+* You can use zip files, and urls for big 3d models. Treatsock will download files from links.
 <pre>
+$createRequest->fileUrls[] = 'http://mysite.com/test.stl';
+</pre>
+or 
+<pre>
+$createRequest->fileUrls[] = 'http://mysite.com/test.zip';
+</pre>
+instead of 
+<pre>
+$createRequest->filePaths[] = './test.stl';
+</pre>
