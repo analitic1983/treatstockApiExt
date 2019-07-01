@@ -70,6 +70,10 @@ class RequestProcessor
         return $result | $err;
     }
 
+    protected function debugWrite($params)
+    {
+        echo \treatstock\api\v2\helpers\FormattedJson::encode($params);
+    }
 
     /**
      * @param $url
@@ -80,11 +84,13 @@ class RequestProcessor
      */
     protected function debugLog($url, $postParams, $result, $httpStatus, $err)
     {
-        echo "\nURL: '" . $url . "'";
-        echo "\nPost params: " . json_encode($postParams);
-        echo "\nAnswer: '" . $result . "'";
-        echo "\nHttp code: '" . $httpStatus . "'";
-        echo "\nHttp error: '" . $err . "'";
-        echo "\n";
+        $output = [
+            'URL' => $url,
+            'Post' =>  $postParams,
+            'Answer' => $result,
+            'HttpCode' => $httpStatus,
+            'HttpError' => $err,
+        ];
+        $this->debugWrite($output);
     }
 }
