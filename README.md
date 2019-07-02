@@ -3,15 +3,15 @@
 
 <h2>Introduction</h2>
 
-Using treatstock api you can upload 3d model, get model size and weight, calculate printing price, make order.
+With Treatstock API you can upload 3D models, get their size and weight estimation, calculate 3D printing prices and place orders.
 
-Simplest using way it is creating printable pack using api, and then redirect client using treatstock.api url.
+The simplest way to use our solution is to create a printable pack via API and then redirect your client using treatstock.api url.
 
-At first you should clone this project from git. In "examples" folder you can try start examples: 01_CreatePrintablePack.php.
+At first, you should clone this project from git. In the "examples" folder you can find 01_CreatePrintablePack.php. We recommend you to try running this sample code. 
 
-All api requests making through "TreatstockApiService" class.  
-Class constructor have parameter $privateKey - this is your personal company key for api access to treatstock. 
-You should contact support@treatstock.com for get this privateKey.
+All API requests should be processed through "TreatstockApiService" class.
+Class constructor contains parameter $privateKey, which is your personal company key for API access to Treatstock.
+To get one you should contact support@treatstock.com.
 
 <h2>Create Printable Pack</h2>
 
@@ -21,12 +21,12 @@ Creating instance of this class:
 $apiService = new \treatstock\api\v2\TreatstockApiService($privateKey);
 </pre>
 
-You can set debug mode to output all http request info:
+Additionally, you can set a debug mode to output all http info requests:
 <pre>
 $apiService->setDebugMode(true);
 </pre>
 
-Let's make simple create printable pack request. It should contain files path and possible client location, default is US.
+Let's make a simple request for creating a printable pack. The request must contain files path and client’s potential location on a country level. The default location is the US (United States of America).
 
 <pre>
 $createRequest = new \treatstock\api\v2\models\requests\CreatePrintablePackRequest();
@@ -63,19 +63,19 @@ Create printable pack response:
 </pre>
 
 <b>id</b>           - printable pack id<br>
-<b>redir</b>        - url for page with printing model<br>
-<b>widgetUrl</b>    - may be used to insert into iframe with custom settings<br>
-<b>widgetHtml</b>   - ready to use iframe html code<br>
-<b>parts</b>        - list of model3d parts info
+<b>redir</b>        - url for a page with a 3D model<br>
+<b>widgetUrl</b>    - can be used for iframe with custom settings<br>
+<b>widgetHtml</b>   - an html code with ready to use iframe<br>
+<b>parts</b>        - list of information on model3d parts<br>
 
-Using information about parts info you can change it`s qty, change colors, get information about its possible weight.
-You can simply upload you model, and get printing commission.
+You can use parts information to change qty (quantity), color(s) and material(s) choice, get data on a possible weight of model(s).
+If you engage visitors to place orders via our API, you will get an affiliate reward for each completed order.
 
-<h2>Colors and prices</h2>
-If you want more control by your side, you can get list of prices in different colors and materials.
-Example: 04_GetPrintablePackPrices.php
 
-After you create printable pack, use printable pack id for prices request:
+<h2>Colors and Prices</h2>
+To get a list of prices for 3D printing with different colors and materials, run the following price request - 04_GetPrintablePackPrices.php
+
+This should be used after a printable pack created and contain the printablePackId:
 <pre>
 // Try get printable pack prices
 echo "\nGet printable pack prices...";
@@ -113,14 +113,14 @@ Get printable pack prices response:
 }  
 </pre>
 
-You can use url for printing directly in this color and this material with fixed printing price.
+The url received can be used for placing an order with a specific vendor with selected parameters (material and color) for the estimated price.
 
 <h2>Make order</h2>
 
-For partners with order flow we have api for creating orders.
+For partners capable of generating 3D printing order flow we have an API for creating orders.
 Example: 05_PlaceOrder.php
 
-You should set information about client location, phone, printer for manufacturing and 3dmodel materials/colors.
+To make it work, you must set information about the client’s location, phone number, material(s) and color(s) choice as well as select a 3D printer to send the order to.
 
 Output example: 
 <pre>
@@ -130,15 +130,16 @@ Output example:
     "url": "http://ts.h3.tsdev.work/workbench/order/view/44649"
 }</pre>
 
-<h2>Make order in colors</h2>
+<h2>Make an Order for different colors</h2>
 
-For printing model3d in different colors use example: 06_PlaceOrderColored.php
+For printing model3d in different colors, use the example: 06_PlaceOrderColored.php
 
-You should use calls:
+Use the following codes:
 1. $apiService->createPrintablePack - create printable pack
-2. $apiService->changePrintablePack - set manual colors and materials for current 3dmodel
-3. $apiService->getPrintablePackOffers - get offers for printing. List of offers from differnt printing services.
-Example output:
+2. $apiService->changePrintablePack - sets colors and materials manually for a specific 3dmodel
+3. $apiService->getPrintablePackOffers -  gets actual offers for 3D printing from different service providers on Treatstock
+
+Output example:
 <pre>
 {
     "modelTextureInfo": {
@@ -175,8 +176,8 @@ Example output:
 }
 </pre>
 
-4. $apiService->placeOrder - place order using offer from previos request
-Example output:
+4. $apiService->placeOrder - places an order using a specific offer from the previous request
+Output example:
 <pre>
 {
     "orderId": 44650,
@@ -185,10 +186,10 @@ Example output:
 }
 </pre>
 
-<h2>Additions</h2>
+<h2>Additional Features</h2>
 
-* You can use "material" instead of "materialGroup" for printing directly in specified material.
-* You can override "RequestProcessor" class for network or log control.
+* You can use the code "material" instead of "materialGroup" for printing a specific material rather than placing an order for any available material in the group (for example, to narrow your choice to “PLA+” instead of every filament in the range of “PLA”).
+* You can override the "RequestProcessor" class for network or log control.
 
 Example:
 <pre>
@@ -205,20 +206,23 @@ $apiService->requestProcessor  = new RequestProcessorExt();
 $createResponse = $apiService->createPrintablePack($createRequest);
 </pre>
 
-* Treatsock can autodetect client location by ip, use  
-<pre>$createRequest->locationIp = '000.000.000.000';</pre>
-instead of 
+* Treatsock can also autodetect client’s location by their IP. To do so, replace the code:  
 <pre>$createRequest->locationCountryIso = 'US'</pre>
+instead of
+<pre>$createRequest->locationIp = '000.000.000.000';</pre> 
 
-* You can use zip files, and urls for big 3d models. Treatsock will download files from links.
+
+* It is possible to use zip files and URLs for large 3D models, so Treatsock will download the files via links provided. To use this feature, replace the following code:
+<pre>
+$createRequest->filePaths[] = './test.stl';
+</pre>
+
+instead of 
+
 <pre>
 $createRequest->fileUrls[] = 'http://mysite.com/test.stl';
 </pre>
 or 
 <pre>
 $createRequest->fileUrls[] = 'http://mysite.com/test.zip';
-</pre>
-instead of 
-<pre>
-$createRequest->filePaths[] = './test.stl';
 </pre>
